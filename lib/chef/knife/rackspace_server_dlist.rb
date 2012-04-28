@@ -11,7 +11,7 @@ class Chef
       def run
         $stdout.sync = true
 
-        server_list = [
+        server_dlist = [
           ui.color('Instance ID', :bold),
           ui.color('Public IP', :bold),
           ui.color('Private IP', :bold),
@@ -22,15 +22,15 @@ class Chef
           ui.color('State', :bold)
         ]
         connection.servers.all.each do |server|
-          server_list << server.id.to_s
-          server_list << (server.public_ip_address == nil ? "" : server.public_ip_address)
-          server_list << (server.addresses["private"].first == nil ? "" : server.addresses["private"].first)
-          server_list << (server.flavor_id == nil ? "" : server.flavor_id.to_s)
-          server_list << (server.image_id == nil ? "" : server.image_id.to_s)
-          server_list << server.name
-          server_list << (server.metadata["owner"] == nil ? "" : server.metadata["owner"])
+          server_dlist << server.id.to_s
+          server_dlist << (server.public_ip_address == nil ? "" : server.public_ip_address)
+          server_dlist << (server.addresses["private"].first == nil ? "" : server.addresses["private"].first)
+          server_dlist << (server.flavor_id == nil ? "" : server.flavor_id.to_s)
+          server_dlist << (server.image_id == nil ? "" : server.image_id.to_s)
+          server_dlist << server.name
+          server_dlist << (server.metadata["owner"] == nil ? "" : server.metadata["owner"])
           
-          server_list << begin
+          server_dlist << begin
             case server.state.downcase
             when 'deleted','suspended'
               ui.color(server.state.downcase, :red)
@@ -41,7 +41,7 @@ class Chef
             end
           end
         end
-        puts ui.list(server_list, :uneven_columns_across, 8)
+        puts ui.list(server_dlist, :uneven_columns_across, 8)
         
       end
     end
