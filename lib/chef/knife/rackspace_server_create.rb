@@ -201,7 +201,7 @@ class Chef
         bootstrap.config[:distro] = locate_config_value(:distro)
         # bootstrap will run as root...sudo (by default) also messes up Ohai on CentOS boxes
         bootstrap.config[:use_sudo] = true unless config[:ssh_user] == 'root'
-        bootstrap.config[:rs_template_file] = locate_config_value(:rs_template_file)
+        bootstrap.config[:template_file] = locate_config_value(:rs_template_file)
         bootstrap.config[:environment] = config[:environment]
         bootstrap
       end
