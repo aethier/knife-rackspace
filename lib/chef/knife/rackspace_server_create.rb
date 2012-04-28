@@ -45,7 +45,7 @@ class Chef
         :short => "-I IMAGE",
         :long => "--image IMAGE",
         :description => "The image of the server",
-        :proc => Proc.new { |i| Chef::Config[:knife][:image] = i.to_i }
+        :proc => Proc.new { |i| Chef::Config[:knife][:rs_image] = i.to_i }
 
       option :server_name,
         :short => "-S NAME",
@@ -136,7 +136,7 @@ class Chef
       def run
         $stdout.sync = true
 
-        unless Chef::Config[:knife][:image]
+        unless Chef::Config[:knife][:rs_image]
           ui.error("You have not provided a valid image value.  Please note the short option for this value recently changed from '-i' to '-I'.")
           exit 1
         end

@@ -12,11 +12,9 @@ Gem::Specification.new do |s|
   s.summary = "Rackspace Support for Chef's Knife Command"
   s.description = s.summary
   s.extra_rdoc_files = ["README.rdoc", "LICENSE" ]
-
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.add_dependency "fog", "~> 0.8.2"
+  s.add_dependency "fog", "~> 1.3.1"
   s.require_paths = ["lib"]
-
 end
