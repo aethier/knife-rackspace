@@ -35,23 +35,23 @@ class Chef
             require 'chef/json_compat'
           end
 
-          option :rackspace_api_key,
+          option :rs_api_key,
             :short => "-K KEY",
             :long => "--rackspace-api-key KEY",
             :description => "Your rackspace API key",
-            :proc => Proc.new { |key| Chef::Config[:knife][:rackspace_api_key] = key }
+            :proc => Proc.new { |key| Chef::Config[:knife][:rs_api_key] = key }
 
-          option :rackspace_username,
+          option :rs_username,
             :short => "-A USERNAME",
             :long => "--rackspace-username USERNAME",
             :description => "Your rackspace API username",
-            :proc => Proc.new { |username| Chef::Config[:knife][:rackspace_username] = username }
+            :proc => Proc.new { |username| Chef::Config[:knife][:rs_username] = username }
 
-          option :rackspace_api_auth_url,
+          option :rs_api_auth_url,
             :long => "--rackspace-api-auth-url URL",
             :description => "Your rackspace API auth url",
             :default => "auth.api.rackspacecloud.com",
-            :proc => Proc.new { |url| Chef::Config[:knife][:rackspace_api_auth_url] = url }
+            :proc => Proc.new { |url| Chef::Config[:knife][:rs_api_auth_url] = url }
         end
       end
 
@@ -59,9 +59,9 @@ class Chef
         @connection ||= begin
           connection = Fog::Compute.new(
             :provider => 'Rackspace',
-            :rackspace_api_key => Chef::Config[:knife][:rackspace_api_key],
-            :rackspace_username => (Chef::Config[:knife][:rackspace_username] || Chef::Config[:knife][:rackspace_api_username]),
-            :rackspace_auth_url => Chef::Config[:knife][:rackspace_api_auth_url] || config[:rackspace_api_auth_url]
+            :rackspace_api_key => Chef::Config[:knife][:rs_api_key],
+            :rackspace_username => (Chef::Config[:knife][:rs_username] || Chef::Config[:knife][:rs_api_username]),
+            :rackspace_auth_url => Chef::Config[:knife][:rs_api_auth_url] || config[:rs_api_auth_url]
           )
         end
       end

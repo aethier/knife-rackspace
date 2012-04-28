@@ -34,14 +34,14 @@ class Chef
 
       banner "knife rackspace server create (options)"
 
-      option :flavor,
+      option :rs_flavor,
         :short => "-f FLAVOR",
         :long => "--flavor FLAVOR",
         :description => "The flavor of server; default is 2 (512 MB)",
-        :proc => Proc.new { |f| Chef::Config[:knife][:flavor] = f.to_i },
+        :proc => Proc.new { |f| Chef::Config[:knife][:rs_flavor] = f.to_i },
         :default => 2
 
-      option :image,
+      option :rs_image,
         :short => "-I IMAGE",
         :long => "--image IMAGE",
         :description => "The image of the server",
@@ -89,10 +89,10 @@ class Chef
         :proc => Proc.new { |d| Chef::Config[:knife][:distro] = d },
         :default => "ubuntu10.04-gems"
 
-      option :template_file,
+      option :rs_template_file,
         :long => "--template-file TEMPLATE",
         :description => "Full path to location of template to use",
-        :proc => Proc.new { |t| Chef::Config[:knife][:template_file] = t },
+        :proc => Proc.new { |t| Chef::Config[:knife][:rs_template_file] = t },
         :default => false
 
       option :run_list,
@@ -102,11 +102,11 @@ class Chef
         :proc => lambda { |o| o.split(/[\s,]+/) },
         :default => []
 
-      option :rackspace_metadata,
+      option :rs_metadata,
         :short => "-M JSON",
-        :long => "--rackspace-metadata JSON",
+        :long => "--metadata JSON",
         :description => "JSON string version of metadata hash to be supplied with the server create call",
-        :proc => Proc.new { |m| Chef::Config[:knife][:rackspace_metadata] = JSON.parse(m) },
+        :proc => Proc.new { |m| Chef::Config[:knife][:rs_metadata] = JSON.parse(m) },
         :default => ""
 
       def tcp_test_ssh(hostname)
@@ -143,9 +143,9 @@ class Chef
 
         server = connection.servers.create(
           :name => config[:server_name],
-          :image_id => Chef::Config[:knife][:image],
-          :flavor_id => locate_config_value(:flavor),
-          :metadata => Chef::Config[:knife][:rackspace_metadata]
+          :image_id => Chef::Config[:knife][:rs_image],
+          :flavor_id => locate_config_value(:rs_flavor),
+          :metadata => Chef::Config[:knife][:rs_metadata]
         )
 
         puts "#{ui.color("Instance ID", :cyan)}: #{server.id}"
@@ -201,7 +201,7 @@ class Chef
         bootstrap.config[:distro] = locate_config_value(:distro)
         # bootstrap will run as root...sudo (by default) also messes up Ohai on CentOS boxes
         bootstrap.config[:use_sudo] = true unless config[:ssh_user] == 'root'
-        bootstrap.config[:template_file] = locate_config_value(:template_file)
+        bootstrap.config[:rs_template_file] = locate_config_value(:rs_template_file)
         bootstrap.config[:environment] = config[:environment]
         bootstrap
       end
